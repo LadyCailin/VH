@@ -1,0 +1,26 @@
+VH is a library that simplifies and abstracts the View and Controller portions
+of the MVC design paradigm. The main feature of VH is its View classes, that
+wrap and abstract HTML to the point that you don't need to write HTML ever.
+
+This paradigm is much different than the standard template system that most
+websites use, but is nonetheless much more flexible and powerful. If you 
+properly use the system, your code will be efficient, testable, maintainable,
+and valid, which is not something that can easily be said for code written
+using a templating system. Using PHP's powerful inheritance mechanisms, View
+classes can be easily extended, changing and customizing the many built in
+classes to suit your needs. Most rote tasks are abstracted up to the extent
+that very little code needs to be written to specify your desired results,
+since the concept of Convention Over Configuration is used, but it makes sure
+that Customizability is not sacrificed. Additionally, things are kept in
+programmatic terms until the very last second, which means that intentions
+can be automatically re-used as necessary, for instance, when validating
+parameters returned by a ajax-submitted form, you must only specify the 
+validation parameters once, and the framework takes care of validating them both
+server side and client side. jQuery and jQuery UI are baked in too, with quick,
+easy ways built in to manipulate the client side behavior directly in PHP,
+without having to actually write javascript, unless you are doing something very
+custom.
+
+VH is released under the unrestrictive MIT license, so you are free to use this
+project in Open Source projects, as well as closed source commercial projects,
+without having to worry.
