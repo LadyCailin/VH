@@ -18,6 +18,15 @@ class HTMLImg extends HTMLContainer {
     protected function getTagName() {
         return "img";
     }
+    
+    public function getAltText(){
+        return $this->getAttribute("alt");
+    }
+    
+    public function setAltText($text){
+        $this->setAttribute("alt", $text);
+        return $this;
+    }
 
 }
 ?>

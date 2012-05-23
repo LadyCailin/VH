@@ -303,6 +303,8 @@ class HTMLFormOptions {
      * 		error:
      * 			A string, representing the error message to display if this value is not acceptable for whatever reason.
      * 			A generic message will be provided if this is not set.
+     * TODO: Finish adding regex and error values, and also add custom type, which will automatically trigger both server side
+     * and client side validation, which is provided by the business logic.
      * @var type 
      */
     public $validationOptions = array();

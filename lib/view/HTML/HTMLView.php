@@ -156,7 +156,7 @@ abstract class HTMLView implements View {
         return $this;
     }
 
-    final public function getTitle() {
+    final public function getPageTitle() {
         return $this->title;
     }
 

@@ -92,7 +92,7 @@ class HTMLPage extends HTMLView {
         if ($this->getTitleAttributes() !== null) {
             $render .= " " . $this->getTitleAttributes();
         }
-        $render .= ">" . $this->getTitle() . "</title>";
+        $render .= ">" . $this->getPageTitle() . "</title>";
         $render .= "</head>";
         $render .= $body->render();
         $render .= "</html>";
