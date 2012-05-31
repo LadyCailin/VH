@@ -86,7 +86,12 @@ $manager->registerView("view2", function($manager) {
             appendContent($manager->getComponent("table"))->
             //... and add some other stuff. This demonstrates how easy it is
             //to create both ordered and unordered lists, even nested ones.           
-            appendContent(new HTMLUnorderedlist(array("bat", new HTMLOrderedlist(array("cat", "sat")), "hat")))->
+            appendContent(new HTMLUnorderedlist(array(
+                "bat", 
+                new HTMLOrderedlist(array(
+                    "cat", 
+                    "sat")), 
+                "hat")))->
             appendContent(new HTMLOrderedList(array("one", "two", "three")));
     return $frame;
 });

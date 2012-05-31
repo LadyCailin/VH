@@ -13,13 +13,17 @@
  */
 final class HTMLPageManager {
 
-    private static $reservedRequestVars = array("_view", "_action", "_ajax", "_managed", "_regen", "_fallback");
-    private $_view;
-    private $_action;
-    private $_ajax;
-    private $_managed;
-    private $_regen;
-    private $_fallback;
+    private static $reservedRequestVars = array("vh_view", "vh_action", "vh_ajax", "vh_managed", "vh_regen", "vh_fallback");
+    
+    //reserved request variables
+    private $vh_view;
+    private $vh_action;
+    private $vh_ajax;
+    private $vh_managed;
+    private $vh_regen;
+    private $vh_fallback;
+    
+    
     private $defaultHTMLViewOptions = null;
     private $defaultView = null;
     private $handled = false;
@@ -68,23 +72,23 @@ final class HTMLPageManager {
                 unset($_POST[$var]);
                 unset($_GET[$var]);
                 switch ($var) {
-                    case "_view":
-                        $this->_view = $varVal;
+                    case "vh_view":
+                        $this->vh_view = $varVal;
                         break;
-                    case "_action":
-                        $this->_action = $varVal;
+                    case "vh_action":
+                        $this->vh_action = $varVal;
                         break;
-                    case "_ajax":
-                        $this->_ajax = $varVal;
+                    case "vh_ajax":
+                        $this->vh_ajax = $varVal;
                         break;
-                    case "_managed":
-                        $this->_managed = $varVal;
+                    case "vh_managed":
+                        $this->vh_managed = $varVal;
                         break;
-                    case "_regen":
-                        $this->_regen = $varVal;
+                    case "vh_regen":
+                        $this->vh_regen = $varVal;
                         break;
-                    case "_fallback":
-                        $this->_fallback = $varVal;
+                    case "vh_fallback":
+                        $this->vh_fallback = $varVal;
                         break;
                     default:
                         break;
@@ -93,11 +97,11 @@ final class HTMLPageManager {
         }
 
         $this->handled = true;
-        if (isset($this->_fallback)) {
+        if (isset($this->vh_fallback)) {
             //It's a form fallback, we need to generate the form, display it, then return.			
             $content = null;
-            $form = $this->getComponent($this->_fallback);
-            $this->prepareForm($this->_fallback, $form);
+            $form = $this->getComponent($this->vh_fallback);
+            $this->prepareForm($this->vh_fallback, $form);
             if ($this->wrapperGenerator === null) {
                 trigger_error("No wrapper generator was provided, using barebones page instead.", E_USER_WARNING);
                 $content = new HTMLPage($form);
@@ -107,14 +111,14 @@ final class HTMLPageManager {
             $content->display();
             return;
         }
-        if (isset($this->_action)) {
+        if (isset($this->vh_action)) {
             //It's a request that needs action, if it's managed, then it's a form submission (ajax or otherwise)
             //and if it's not, we need to pass the action on to the generic action handler.
-            if (isset($this->_managed)) {
-                if (isset($this->formCallbacks[$this->_action])) {
+            if (isset($this->vh_managed)) {
+                if (isset($this->formCallbacks[$this->vh_action])) {
                     //We need to fill in the missing parameters that are supposed to be in this form, but are not
                     //(checkboxes have this behavior, for instance)
-                    foreach ($this->getComponent($this->_action)->getAllInputNames() as $name => $type) {
+                    foreach ($this->getComponent($this->vh_action)->getAllInputNames() as $name => $type) {
                         if ($type == HTMLInput::CHECKBOX) {
                             if (!isset($_REQUEST[$name])) {
                                 $_REQUEST[$name] = false;
@@ -122,12 +126,12 @@ final class HTMLPageManager {
                         }
                     }
                     $errors = array();
-                    if (isset($this->formOptions[$this->_action]->validationOptions)) {
-                        $errors = array_merge($errors, $this->doValidation($_REQUEST, $this->formOptions[$this->_action]->validationOptions));
+                    if (isset($this->formOptions[$this->vh_action]->validationOptions)) {
+                        $errors = array_merge($errors, $this->doValidation($_REQUEST, $this->formOptions[$this->vh_action]->validationOptions));
                     }
                     try {
                         //This function can throw an exception, which will 
-                        call_user_func($this->formCallbacks[$this->_action], $_REQUEST);
+                        call_user_func($this->formCallbacks[$this->vh_action], $_REQUEST);
                     } catch (HTMLValidationException $e) {
                         $errors = array_merge($errors, $e->getErrors());
                     }
@@ -139,13 +143,13 @@ final class HTMLPageManager {
                 }
             } else {
                 if ($this->actionHandler instanceof Closure) {
-                    call_user_func($this->actionHandler, $this->_action);
+                    call_user_func($this->actionHandler, $this->vh_action);
                 } else {
                     trigger_error("A custom action was sent, but the action handler has not been set", E_USER_NOTICE);
                 }
             }
         }
-        if (isset($this->_ajax)) {
+        if (isset($this->vh_ajax)) {
             //It's an ajax request, and it may want to regen some components
             //TODO
         } else {
@@ -153,7 +157,7 @@ final class HTMLPageManager {
             $this->defaultHTMLViewOptions = new HTMLViewOptions();
             $viewToRender = $this->defaultView;
             $viewOptions = $this->defaultHTMLViewOptions;
-            $requestedView = $this->_view;
+            $requestedView = $this->vh_view;
             if (isset($requestedView)) {
                 if (isset($this->views[$requestedView])) {
                     $viewToRender = $this->views[$requestedView];
@@ -379,7 +383,7 @@ final class HTMLPageManager {
      * @param type $view 
      */
     public function displayView($view) {
-        if ($this->_ajax) {
+        if ($this->vh_ajax) {
             $this->javascriptControl("showView", $view);
         } else {
             $view = $this->views[$view];
@@ -476,7 +480,7 @@ class HTMLViewOptions {
 /**
  * This class contains consts that are commonly included javascript and css files.
  * There is no requirement you use these specifically, but if you do, they will be automatically
- * upgraded for you. Note that using multiple versions of a javascript library
+ * upgraded for you as versions are upped. Note that using multiple versions of a javascript library
  * will cause issues, so it is highly recommended you use these standard values. 
  */
 class CommonIncludes {
