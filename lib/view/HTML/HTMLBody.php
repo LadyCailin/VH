@@ -16,16 +16,17 @@ class HTMLBody extends HTMLComposite {
     }
 
     protected function getContent() {
-        $content = parent::getContent();
+        $content = new HTMLDiv(parent::getContent());
         $inlineScripts = $this->getInlineScripts();
-        if (trim($inlineScripts) != "") {
-            //TODO: The javascript can be minified at this point, if desired.
-            $content .=
+        if (trim($inlineScripts) != "") {		
+            //TODO: The javascript can be minified at this point, if desired.	    
+            $js =
                     '<script type="text/javascript"><!--//--><![CDATA[//><!--' . "\n"
                     . $inlineScripts
-                    . "\n//--><]]></script>";
+                    . "\n//--><]]></script>";	    
+	    $content->addView(new HTMLRaw($js));
         }
-        return new HTMLBlock($content);
+        return $content;
     }
 
     protected function getCompositeTagName() {

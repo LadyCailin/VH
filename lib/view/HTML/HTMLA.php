@@ -1,9 +1,9 @@
 <?php 
-include_once(dirname(__FILE__)."/HTMLContainer.php");
+include_once(dirname(__FILE__)."/HTMLInline.php");
 /**
  * This class represents an a tag. 
  */
-class HTMLA extends HTMLContainer {
+class HTMLA extends HTMLInline {
     /**
      * Used by target, opens the link in a new window 
      */
@@ -82,8 +82,8 @@ class HTMLA extends HTMLContainer {
         return $this;
     }
 
-    public function getTagName() {
-        return "a";
+    protected function getCompositeTagName() {
+		return "a";	    	    
     }
 
 }

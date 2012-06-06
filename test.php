@@ -72,7 +72,10 @@ $manager->registerView("main", function($manager) {
             //content area, but if we always wanted it visible, we could do that instead.
             appendContent(new HTMLShowFormButton("form", "Show Form"))->
             //Here we add a button that will take us to view2, which we will register in a second.
-            appendContent(new HTMLBlock(new HTMLShowViewButton("view2", "Go to View 2")));
+            appendContent(new HTMLDiv(new HTMLShowViewButton("view2", "Go to View 2, which demonstrates component reuse")))->
+	    //Here, we add a button that will take us to the accordion view
+	    appendContent(new HTMLDiv(new HTMLShowViewButton("accordion", "Go to the accordion demo")))->
+	    appendContent(new HTMLDiv(new HTMLShowViewButton("formatting", "Go to the formatting tag demo (things like <strong>, etc)")));
     return $frame;
 });
 
@@ -94,6 +97,41 @@ $manager->registerView("view2", function($manager) {
                 "hat")))->
             appendContent(new HTMLOrderedList(array("one", "two", "three")));
     return $frame;
+});
+
+//This view demonstrates the ease with which an accordion widget can be created.
+//Note that this view is returning just an HTMLView, not an HTMLPage, because
+//of this, the manager will send this content to the wrapper generator, which
+//by default simply uses a barebones HTML page, but can be overridden (as is done
+//below) to return a more complex page, without having to re-implement the page.
+$manager->registerView("accordion", function($manager){
+	//Create a new block element, we need to add a button to go back to the main view,
+	//as well as the accordion itself.
+	$block = new HTMLDiv();
+	//The options here are passed directly to the jquery accordion constructor.
+	//We have to provide an id now, if we wish, since that is how the manager
+	//knows which accordion to tie these options to. However, if we tried to
+	//set the id manually later, it would throw an exception.
+	$acc = new HTMLAccoridion(array("active"=>1), "accordionID");
+	for($i = 0; $i < 5; $i++){
+		//To add a section to the accordion, simply call addSection.
+		$acc->addSection("Title " . ($i + 1), "This is the contents of section " . ($i + 1));
+	}
+	$block->addView($acc);	
+	$block->addView(new HTMLShowViewButton("main", "Go back"));
+	return $block;
+});
+
+$manager->registerView("formatting", function($manager){
+	$block = new HTMLDiv();
+	$block->addView(new HTMLP("This is a paragraph, with ", new HTMLStrong("strong text"), ", ", new HTMLEm("and em text.")));
+	$block->addView(new HTMLPre("This is preformatted text,\nwhich has newlines,\n      and spaces. <test>"));
+	$block->addView(new HTMLBr());
+	$block->addView(new HTMLBr());
+	$block->addView(new HTMLBr());
+	$block->addView("There are a few <br /> tags right above here");
+	$block->addView(new HTMLDiv(new HTMLShowViewButton("main", "Go back")));
+	return $block;
 });
 
 //Now, all of our views are added, but we also need to register our components.
@@ -175,9 +213,9 @@ $formOptions->isAsync = false;
 //is guaranteed to be correct at this point.
 $manager->addForm("form", function($manager) {
     $form = new HTMLForm();    
-    $form->addView(new HTMLBlock(new HTMLCheckboxInput("name", "Hi!", true)));
-    $form->addView(new HTMLBlock(new HTMLRadioGroup("radio", array("one" => "One", "two" => "Two", "three" => "Three"), "two")));
-    $form->addView(new HTMLBlock("Text: ", new HTMLTextInput("text")));
+    $form->addView(new HTMLDiv(new HTMLCheckboxInput("name", "Hi!", true)));
+    $form->addView(new HTMLDiv(new HTMLRadioGroup("radio", array("one" => "One", "two" => "Two", "three" => "Three"), "two")));
+    $form->addView(new HTMLDiv("Text: ", new HTMLTextInput("text")));
     $form->addView(new HTMLSubmitResetCancelInput("", ""));
     $form->setFieldsetName("Fieldset");
     $form->setMethod(HTMLForm::POST);

@@ -32,16 +32,24 @@ abstract class HTMLFlatComposite extends HTMLContainer {
                     $this->construct0($view);
                 }
             } else {
-                $this->addView0($arg);
+                $this->addAnyView($arg);
             }
         }
     }
 
-    private function addView0($view) {
+    /**
+     * Convenience method to add a component to this composite. If the object passed in
+     * is not an HTMLView, it is first wrapped in an HTMLText object. Since this isn't
+     * always desirable, this method is protected (and final) but you can override
+     * addView and pass it to this function, which will in turn call this class's
+     * addView method, ensuring it passes in an HTMLView.
+     * @param HTMLView $view 
+     */
+    protected function addAnyView($view) {
         if ($view instanceof HTMLView) {
-            $this->addView($view);
+            self::addView($view);
         } else {
-            $this->addView(new HTMLText($view));
+            self::addView(new HTMLText($view));
         }
     }
 

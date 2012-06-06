@@ -11,7 +11,7 @@ class HTMLShowViewButton extends HTMLView {
     public function __construct($viewName, $buttonText) {
         $form = new HTMLForm();
         $form->setMethod(HTMLForm::POST);
-        $form->addHiddenInputs(array("_view" => $viewName));
+        $form->addHiddenInputs(array("vh_view" => $viewName));
         $form->addView(new HTMLSubmitInput(null, $buttonText));
         $form->addClass("--intercept");
         $form->addClass("--show-view");

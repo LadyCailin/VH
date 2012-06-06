@@ -105,7 +105,8 @@ abstract class HTMLContainer extends HTMLView {
      * @param type $id 
      */
     public function setId($id) {
-        $this->setAttribute("id", $id);
+	$this->removeAttribute("id");
+        $this->appendAttribute("id", $id);
         return $this;
     }
 
@@ -169,6 +170,9 @@ abstract class HTMLContainer extends HTMLView {
      * specially handling, and you should use it to actually add the attribute as well, or setAttribute.
      */
     public function appendAttribute($name, $content) {
+	if($this->attributes === null){
+		$this->attributes = array();
+	}
         $name = trim(strtolower($name));
         $this->checkAttribute($name);
         if ($name == "id" && isset($this->attributes['id'])) {

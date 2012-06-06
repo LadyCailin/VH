@@ -1,6 +1,6 @@
 <?php 
 include_once(dirname(__FILE__)."/HTMLContainer.php");
-class HTMLImg extends HTMLContainer {
+class HTMLImg extends HTMLInline {
 
     public function __construct($src, $alt, $width = null, $height = null) {
         if (!isset($alt)) {
@@ -15,7 +15,7 @@ class HTMLImg extends HTMLContainer {
             $this->setAttribute("height", $height);
     }
 
-    protected function getTagName() {
+    protected function getCompositeTagName() {
         return "img";
     }
     

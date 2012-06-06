@@ -2,6 +2,7 @@
 var VC = new function ViewCore(){	
 	/* Private **************************************************************************************/
 	var formOptions = new Array();
+	var metaData = new Array();
 	//Initialization function
 	(function(){
 		$(function(){		
@@ -21,6 +22,9 @@ var VC = new function ViewCore(){
 				if($(element).hasClass("--show-view")){
 					prepareShowView($(element).find("input[name='_view']").val());
 				}
+				if($(element).hasClass("--accordion")){
+					prepareAccordion($(element));
+				}
 			});			
 		});
 		installDialogBox();
@@ -39,6 +43,11 @@ var VC = new function ViewCore(){
 			e.preventDefault();
 			return false;
 		})
+	}
+	
+	function prepareAccordion(view){
+		var options = getMetaData($(view).attr("id"), {});
+		$(view).accordion(options);
 	}
 	
 	function showDialog(content, form){
@@ -126,10 +135,32 @@ var VC = new function ViewCore(){
 		});
 	}
 	
+	/**
+	 * Returns the specified component's meta data. If there is no meta data
+	 * specified, _default can be set to be returned instead. Null is returned
+	 * by default.
+	 */
+	function getMetaData(id, _default){
+		if(id != null && id != "" && metaData.hasOwnProperty(id)){
+			return metaData[id];
+		} else {
+			return _default;
+		}
+	}
+	
 	/* Public ***************************************************************************************/
 	
 	this.addFormOptions = function(name, options){
 		formOptions[name] = options;
+	};
+	
+	/**
+	 * Adds any sort of meta data to the component with the specified ID. It is up to
+	 * that component to know how to deal with the given data, but it will be available
+	 * for lookup based on the id.
+	 */
+	this.addComponentMeta = function(id, meta){
+		metaData[id] = meta;
 	};
 };
 

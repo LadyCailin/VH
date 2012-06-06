@@ -1,10 +1,10 @@
 <?php 
-include_once(dirname(__FILE__)."/HTMLComposite.php");
+include_once(dirname(__FILE__)."/HTMLInline.php");
 /**
  * Represents an input of some sort. Subclasses provide more specific functionality, and this
  * class should normally not be instantiated directly.
  */
-abstract class HTMLInput extends HTMLComposite {
+abstract class HTMLInput extends HTMLInline {
 
     const BUTTON = "button";
     const CHECKBOX = "checkbox";
@@ -17,7 +17,7 @@ abstract class HTMLInput extends HTMLComposite {
     const SUBMIT = "submit";
     const TEXT = "text";
 
-    protected function __construct($type, $name, $value) {
+    public function __construct($type, $name, $value) {
         $this->setAttribute("type", $type);
         $this->setAttribute("name", $name);
         $this->setAttribute("value", $value);
@@ -220,7 +220,7 @@ class HTMLRadioGroup extends HTMLFlatComposite {
                 $label = new HTMLText(" " . $text);
             }
             if ($blockLevel) {
-                $block = new HTMLBlock(array($radio, $label));
+                $block = new HTMLDiv(array($radio, $label));
                 $this->addView($block);
             } else {
                 $this->addView($radio);
@@ -287,7 +287,7 @@ class HTMLCheckboxInput extends HTMLInput {
 
 }
 
-final class HTMLLabel extends HTMLContainer {
+final class HTMLLabel extends HTMLInline {
 
     public function __construct($for, $content) {
         parent::__construct($content);
@@ -311,7 +311,7 @@ final class HTMLLabel extends HTMLContainer {
         return $this;
     }
 
-    protected function getTagName() {
+    protected function getCompositeTagName() {
         return "label";
     }
 

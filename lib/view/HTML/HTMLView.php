@@ -81,12 +81,18 @@ abstract class HTMLView implements View {
     }
 
     /**
-     * Adds a script that will get added as an inline script
+     * Adds a script that will get added as an inline script. All inline scripts will be consolidated and
+     * placed at the bottom of the page, however the run order is not guaranteed among components, unless
+     * they themselves organize such an ordering. However, most components probably shouldn't
+     * care about other component's script run order, since that implies they are tightly coupled.
      * @param string $script 
      */
-    final protected function addInlineScript($script) {
+    final public function addInlineScript($script) {
         //We must separate scripts with newlines, so that line comments from the previous script don't affect this script
-        $this->internalScripts .= $script . "\n";
+        $this->internalScripts .= $script;
+	if(!preg_match("/\n$/", $this->internalScripts)){
+		$this->internalScripts .= "\n";
+	}
         return $this;
     }
 
@@ -138,7 +144,7 @@ abstract class HTMLView implements View {
      * @return string
      */
     final public function getInlineScripts() {
-        return $this->internalScripts;
+        return preg_replace("/[\n]{2,}$/m", "\n", $this->internalScripts);
     }
 
     /**
@@ -175,7 +181,7 @@ abstract class HTMLView implements View {
                 $this->addExternalCSS($exCSS);
             }
         }
-        $this->addInlineScript($view->internalScripts . "\n");
+        $this->addInlineScript($view->getInlineScripts());
         $this->setPageTitle($view->title);
         $this->customCSS .= ($this->customCSS != "" ? "\n" : "") . $view->customCSS;
     }

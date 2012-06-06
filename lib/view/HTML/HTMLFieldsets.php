@@ -1,15 +1,15 @@
 <?php 
-include_once(dirname(__FILE__)."/HTMLContainer.php");
-include_once(dirname(__FILE__)."/HTMLComposite.php");
-class HTMLLegend extends HTMLContainer {
+include_once(dirname(__FILE__)."/HTMLBlock.php");
+include_once(dirname(__FILE__)."/HTMLInline.php");
+class HTMLLegend extends HTMLInline {
 
-    protected function getTagName() {
+    protected function getCompositeTagName() {
         return "legend";
     }
 
 }
 
-class HTMLFieldset extends HTMLComposite {
+class HTMLFieldset extends HTMLBlock {
 
     private $fieldsetName = null;
 

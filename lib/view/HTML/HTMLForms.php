@@ -77,7 +77,7 @@ class HTMLForm extends HTMLComposite {
             $fieldset = new HTMLFieldset($content, $this->fieldsetName);
             return $fieldset->render();
         } else {
-            return new HTMLBlock($content);
+            return new HTMLDiv($content);
         }
     }
 
