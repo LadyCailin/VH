@@ -47,9 +47,9 @@ abstract class HTMLFlatComposite extends HTMLContainer {
      */
     protected function addAnyView($view) {
         if ($view instanceof HTMLView) {
-            self::addView($view);
+            return self::addView($view);
         } else {
-            self::addView(new HTMLText($view));
+            return self::addView(new HTMLText($view));
         }
     }
 

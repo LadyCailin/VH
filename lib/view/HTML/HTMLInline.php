@@ -15,14 +15,14 @@ abstract class HTMLInline extends HTMLComposite {
         if($view instanceof HTMLBlock){
             trigger_error("Cannot add Block level element to Inline level element", E_USER_WARNING);
         }
-        parent::addView($view);
+        return parent::addView($view);
     }
     
     protected function addAnyView($view){
         if ($view instanceof HTMLView) {
-            self::addView($view);
+            return self::addView($view);
         } else {
-            self::addView(new HTMLText($view));
+            return self::addView(new HTMLText($view));
         }
     }
 
@@ -33,7 +33,7 @@ class HTMLSpan extends HTMLInline{
         return "span";
     }
     public function addView($view) {
-	parent::addAnyView($view);
+	return parent::addAnyView($view);
     }
 }
 ?>

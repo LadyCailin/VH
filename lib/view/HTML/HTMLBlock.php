@@ -16,14 +16,14 @@ abstract class HTMLBlock extends HTMLComposite {
     }
     
     protected function addView($view) {
-	    parent::addAnyView($view);
+	    return parent::addAnyView($view);
     }
 
 }
 
 class HTMLDiv extends HTMLBlock{
 	public function addView($view) {
-		parent::addView($view);
+		return parent::addView($view);
 	}
 
 	protected function getCompositeTagName() {

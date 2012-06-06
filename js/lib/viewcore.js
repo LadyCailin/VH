@@ -162,6 +162,146 @@ var VC = new function ViewCore(){
 	this.addComponentMeta = function(id, meta){
 		metaData[id] = meta;
 	};
+	
 };
 
+//The widget controller works in conjunction with the jQuery UI functions to provide easier
+//access to certain widgets.
+var widgets = new function WidgetController(){
+	var Accordion = function(handle){
+		//Events
+		this.onCreate = function(method){
+			handle.bind("accordioncreate", method);
+		};
+		
+		this.onChange = function(method){
+			handle.bind("accordionchange", method);
+		}
+		
+		this.onChangeStart = function(method){
+			handle.bind("accordionchangestart", method);
+		}
+		//Methods
+		this.destroy = function(){
+			handle.accordion("destroy");
+		};
+		
+		this.disable = function(){
+			handle.accordion("disable");
+		};
+		
+		this.enable = function(){
+			handle.accordion("enable");
+		};
+		
+		this.option = function(name, value){
+			handle.accordion.apply(handle, Util.array_merge(['option'], arguments));
+		};
+		
+		this.activate = function(index){
+			handle.accordion("activate", index);
+		}
+		
+		this.resize = function(){
+			handle.accordion("resize");
+		}
+		
+		this.closeAll = function(){
+			this.option("collapsible", true);
+			this.activate(false);
+		}
+	};
+
+	var Dialog = function(handle){
+		
+	};
+	/**
+	 * The first step to getting a widget is to call widgets.get('The id you assigned the widget').
+	 * Once you have that, you'll have an instance of a widget controller for that particular widget.
+	 * The type of the widget will be automatically determined, and you can call methods on it to
+	 * control that individual widget. If such an id doesn't exist, or isn't any sort of jquery widget,
+	 * this will return null.
+	 * 
+	 * Note that it doesn't matter if this widget was created through VH or not, but the methods
+	 * all correspond to the PHP controlled functions.
+	 */
+	this.get = function(widgetId){
+		id = "#" + widgetId;
+		if($(id).data("accordion") instanceof $.ui.accordion)
+			return new Accordion($(id));
+		if($(id).data("dialog") instanceof $.ui.dialog)
+			return new Dialog($(id));
+		return null;
+	};
+};
+
+
+//Utility functions
+var Util = new function(){
+	this.array_merge = function array_merge () {
+		// This function retrieved from http://phpjs.org/functions/array_merge:326, which is MIT licensed.
+		// http://kevin.vanzonneveld.net
+		// +   original by: Brett Zamir (http://brett-zamir.me)
+		// +   bugfixed by: Nate
+		// +   input by: josh
+		// +   bugfixed by: Brett Zamir (http://brett-zamir.me)
+		// *     example 1: arr1 = {"color": "red", 0: 2, 1: 4}
+		// *     example 1: arr2 = {0: "a", 1: "b", "color": "green", "shape": "trapezoid", 2: 4}
+		// *     example 1: array_merge(arr1, arr2)
+		// *     returns 1: {"color": "green", 0: 2, 1: 4, 2: "a", 3: "b", "shape": "trapezoid", 4: 4}
+		// *     example 2: arr1 = []
+		// *     example 2: arr2 = {1: "data"}
+		// *     example 2: array_merge(arr1, arr2)
+		// *     returns 2: {0: "data"}
+		var args = Array.prototype.slice.call(arguments),
+			argl = args.length,
+			arg,
+			retObj = {},
+			k = '', 
+			argil = 0,
+			j = 0,
+			i = 0,
+			ct = 0,
+			toStr = Object.prototype.toString,
+			retArr = true;
+
+		for (i = 0; i < argl; i++) {
+			if (toStr.call(args[i]) !== '[object Array]') {
+			retArr = false;
+			break;
+			}
+		}
+
+		if (retArr) {
+			retArr = [];
+			for (i = 0; i < argl; i++) {
+			retArr = retArr.concat(args[i]);
+			}
+			return retArr;
+		}
+
+		for (i = 0, ct = 0; i < argl; i++) {
+			arg = args[i];
+			if (toStr.call(arg) === '[object Array]') {
+			for (j = 0, argil = arg.length; j < argil; j++) {
+				retObj[ct++] = arg[j];
+			}
+			}
+			else {
+			for (k in arg) {
+				if (arg.hasOwnProperty(k)) {
+				if (parseInt(k, 10) + '' === k) {
+					retObj[ct++] = arg[k];
+				}
+				else {
+					retObj[k] = arg[k];
+				}
+				}
+			}
+			}
+		}
+		return retObj;
+		};
+
+};
 

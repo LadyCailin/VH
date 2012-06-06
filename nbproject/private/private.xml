@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/home/lsmith/NetBeansProjects/VH/test.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/js/lib/viewcore.js</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/controller/HTMLPageManager.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/widgets/HTMLProgressBar.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/widgets/HTMLAccordion.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/widgets/HTMLAbstractWidget.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/controller/jstrans/jstrans.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/controller/jstrans/README.php</file>
+    </open-files>
 </project-private>

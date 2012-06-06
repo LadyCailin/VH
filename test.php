@@ -107,12 +107,12 @@ $manager->registerView("view2", function($manager) {
 $manager->registerView("accordion", function($manager){
 	//Create a new block element, we need to add a button to go back to the main view,
 	//as well as the accordion itself.
-	$block = new HTMLDiv();
+	$block = new HTMLDiv();	
 	//The options here are passed directly to the jquery accordion constructor.
 	//We have to provide an id now, if we wish, since that is how the manager
 	//knows which accordion to tie these options to. However, if we tried to
 	//set the id manually later, it would throw an exception.
-	$acc = new HTMLAccoridion(array("active"=>1), "accordionID");
+	$acc = new HTMLAccordion(array("active"=>1), "accordionID");
 	for($i = 0; $i < 5; $i++){
 		//To add a section to the accordion, simply call addSection.
 		$acc->addSection("Title " . ($i + 1), "This is the contents of section " . ($i + 1));
@@ -122,6 +122,7 @@ $manager->registerView("accordion", function($manager){
 	return $block;
 });
 
+//This view demonstrates the common formatting elements, such as strong, em, p, etc.
 $manager->registerView("formatting", function($manager){
 	$block = new HTMLDiv();
 	$block->addView(new HTMLP("This is a paragraph, with ", new HTMLStrong("strong text"), ", ", new HTMLEm("and em text.")));

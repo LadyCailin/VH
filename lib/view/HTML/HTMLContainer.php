@@ -109,6 +109,10 @@ abstract class HTMLContainer extends HTMLView {
         $this->appendAttribute("id", $id);
         return $this;
     }
+    
+    public function getId(){
+	    return $this->getAttribute("id");
+    }
 
     /**
      * Convenience method to add a class to this element

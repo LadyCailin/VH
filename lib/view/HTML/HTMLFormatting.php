@@ -27,7 +27,7 @@ class HTMLP extends HTMLBlock{
 	}
 	
 	public function addView($view) {
-		parent::addView($view);
+		return parent::addView($view);
 	}
 }
 
@@ -37,7 +37,7 @@ class HTMLEm extends HTMLInline{
 		return "em";
 	}
 	public function addView($view) {
-		parent::addView($view);
+		return parent::addView($view);
 	}
 }
 
@@ -47,7 +47,7 @@ class HTMLStrong extends HTMLInline{
 		return "strong";
 	}
 	public function addView($view) {
-		parent::addView($view);
+		return parent::addView($view);
 	}
 }
 
@@ -60,6 +60,17 @@ class HTMLPre extends HTMLInline{
 		if($view instanceof HTMLView && !($view instanceof HTMLText)){
 			trigger_error("Only text data should be passed to a pre tag");
 		}
-		parent::addView($view);
+		return parent::addView($view);
+	}
+}
+
+class HTMLCode extends HTMLInline{
+	
+	protected function getCompositeTagName() {
+		return "code";
+	}
+	
+	public function addView($view){
+		return parent::addView($view);
 	}
 }

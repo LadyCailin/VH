@@ -41,8 +41,7 @@ class HTMLForm extends HTMLComposite {
     }
 
     public function addView(HTMLView $view) {
-        parent::addView($view);
-        return $this;
+        return parent::addView($view);
     }
 
     /**

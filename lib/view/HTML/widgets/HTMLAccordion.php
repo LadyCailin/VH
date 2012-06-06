@@ -1,5 +1,5 @@
 <?php
-
+include_once(dirname(__FILE__)."/HTMLAbstractWidget.php");
 /**
  * Wraps a jQuery UI accordion widget. The most important methods in this class
  * are the constructor, which takes an array of options, and (optionally) the id
@@ -9,8 +9,8 @@
  *
  * @author lsmith
  */
-class HTMLAccoridion extends HTMLComposite{			
-	private $disableIDCheck = false;
+class HTMLAccordion extends HTMLAbstractWidget{			
+
 	/**
 	 * Creates a new Accordion object, based on jQuery's accordion UI widget.
 	 * $id is the id that will be associated with this component, using setId will
@@ -22,23 +22,17 @@ class HTMLAccoridion extends HTMLComposite{
 	 * @param type $options 
 	 */
 	public function __construct(array $options = array(), $id = null){
-		parent::__construct();
+		parent::__construct($id, count($options) != 0);
 		$this->addClass("--intercept");
 		$this->addClass("--accordion");
-		if(count($options) != 0){
-			if($id == null){
-				$id = HTMLContainer::getRandomId();
-			}
+		if(($id = $this->getId()) != null){			
 			$this->addInlineScript("VC.addComponentMeta('$id', " . json_encode($options) . ");");
-		}
-		$this->disableIDCheck = true;
-		$this->setId($id);
-		$this->disableIDCheck = false;
+		}		
 	}
 	
 	public function addSection($title, $contents){
-		if(!($title instanceof HTMLInline)){
-			
+		if($title instanceof HTMLView && !($title instanceof HTMLInline)){
+			trigger_error("Only inline elements can be added as the title in addSection", E_USER_WARNING);
 		}
 		$this->addView(new HTMLH3(new HTMLA($title, "#")));
 		if($contents instanceof HTMLBlock){
@@ -46,19 +40,7 @@ class HTMLAccoridion extends HTMLComposite{
 		} else {
 			$this->addView(new HTMLDiv($contents));
 		}
-	}
-	
-	protected function getCompositeTagName() {
-		return "div";
-	}	
-	
-	public function appendAttribute($name, $content) {
-		if($name == "id" && !$this->disableIDCheck){
-			trigger_error("Cannot set the id except using the constructor for HTMLAccordion.");
-			return;
-		}
-		parent::appendAttribute($name, $content);
-	}
+	}			
 }
 
 ?>
