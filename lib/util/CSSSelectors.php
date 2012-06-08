@@ -9,10 +9,11 @@ class CSSSelectors {
         //TODO: Check for invalid characters in the parent or name
         //Walk through our attributes and check for illegal characters
         foreach ($attributes as $key => $value) {
-            $illegalRegex = '/[:;]/';
+            $illegalRegex = '/[:;0-9]/';
             if (preg_match($illegalRegex, $key) || preg_match($illegalRegex, $value)) {
                 trigger_error("Illegal character in attribute list: '" . $key . "' or '" . $value . "'\n<br />You many not include any characters that"
-                        . " match the following regex: $illegalRegex. Special characters are inserted for you", E_USER_WARNING);
+                        . " match the following regex: $illegalRegex. Special characters are inserted for you. Additionally, you may have forgotten"
+			. " to pass in an associative array. array('background-color', 'red') is not valid, array('background-color' => 'red') is.", E_USER_WARNING);
             }
         }
         $selectors = self::standardizeCSSSelector($name);

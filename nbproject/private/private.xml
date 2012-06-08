@@ -8,7 +8,13 @@
         <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/widgets/HTMLProgressBar.php</file>
         <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/widgets/HTMLAccordion.php</file>
         <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/widgets/HTMLAbstractWidget.php</file>
-        <file>file:/home/lsmith/NetBeansProjects/VH/lib/controller/jstrans/jstrans.php</file>
-        <file>file:/home/lsmith/NetBeansProjects/VH/lib/controller/jstrans/README.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/controller/JS/JS.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/tests/lib/controller/JS/JSTest.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/HTMLBlock.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/HTMLComposite.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/HTMLFlatComposite.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/HTMLContainer.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/view/HTML/HTMLView.php</file>
+        <file>file:/home/lsmith/NetBeansProjects/VH/lib/util/CSSSelectors.php</file>
     </open-files>
 </project-private>

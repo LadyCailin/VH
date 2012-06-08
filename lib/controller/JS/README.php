@@ -15,7 +15,7 @@
  * $button->onClick(
  *	$js->alert("Alert 1")->
  *                alert(
- *	               "Alert 2: " . $js->getHTML('#jquerySelector')
+ *	               $js-concat("Alert 2: ", $js->getHTML('#jquerySelector'))
  *	          )
  *           )
  * );
