@@ -190,30 +190,58 @@ final class HTMLPageManager {
 				trigger_error("Attempting to display a non-HTMLPage in the view manager, or the wrapper generator did not return an HTMLPage object. Make sure that the callbacks"
 					. " you registered with registerView returns an HTMLPage object.", E_USER_WARNING);
 				return;
-			}
-			//We need to add our dialog-able forms here now, so they will be able to be shown in a dialog
-			foreach ($this->forms as $formName) {
-				$form = $this->getComponent($formName);
-				$this->prepareForm($formName, $form);
-				if (isset($this->formOptions[$formName]) && $this->formOptions[$formName]->useDialog) {
-					$form->addExternalScript(CommonIncludes::JQuery);
-					$form->addExternalScript(CommonIncludes::JQueryUI);
-					$form->addExternalScript(CommonIncludes::ViewCore);
-					$form->addExternalCSS(CommonIncludes::JQueryCSS);
-					$form->addStyle("display", "none");
-					$view->appendContent($form);
-				}
-				$this->validateValidationParams($form, $this->formOptions[$formName]->validationOptions);
-			}
-			if (count($this->forms) > 0) {
+			} else {
+				//We need to add our dialog-able forms here now, so they will be able to be shown in a dialog
 				foreach ($this->forms as $formName) {
-					if (isset($this->formOptions[$formName])) {
-						$view->addHeaderScript("VC.addFormOptions(\"$formName\", " . json_encode($this->formOptions[$formName]) . ");\n");
+					$form = $this->getComponent($formName);
+					$this->prepareForm($formName, $form);
+					if (isset($this->formOptions[$formName]) && $this->formOptions[$formName]->useDialog) {
+						$form->addExternalScript(CommonIncludes::JQuery);
+						$form->addExternalScript(CommonIncludes::JQueryUI);
+						$form->addExternalScript(CommonIncludes::ViewCore);
+						$form->addExternalCSS(CommonIncludes::JQueryCSS);
+						$form->addStyle("display", "none");
+						$view->appendContent($form);
+					}
+					$this->validateValidationParams($form, $this->formOptions[$formName]->validationOptions);
+				}
+				if (count($this->forms) > 0) {
+					foreach ($this->forms as $formName) {
+						if (isset($this->formOptions[$formName])) {
+							$view->addHeaderScript("VC.addFormOptions(\"$formName\", " . json_encode($this->formOptions[$formName]) . ");\n");
+						}
 					}
 				}
+				$body = $view->getBody();
+				if($body instanceof HTMLContainer){
+					//Render the event javascript, and place it at the bottom of the page
+					$render = "";
+					$events = $body->getAggregateEvents();
+					if(count($events) != 0){
+						$body->addExternalScript(CommonIncludes::JQuery);
+					}
+					foreach($events as $id => $event){
+						foreach($event as $eventType => $javascriptArray){
+							$render .= "$('#".self::EscapeSelector($id)."').bind('$eventType', function(eventObject){".(JS::$devMode?"\n":"");
+							foreach($javascriptArray as $javascript){
+								$render .= $javascript . (JS::$devMode?"\n":"");
+							}
+							$render .= "});".(JS::$devMode?"\n":""); 
+						}
+					}
+					if(trim($render) != ""){
+						$body->addInlineScript('$(function(){' . (JS::$devMode?"\n":"") . $render . (JS::$devMode?"\n":"") . '})');
+					}
+				}
+				$view->display();
 			}
-			$view->display();
 		}
+	}
+	
+	private static function EscapeSelector($selector){
+		//This is a crazy regex. Basically, it escapes all of the special jquery selector characters, and adds a \ to internal ', so the internal
+		//quotes are already escaped. To escape a character, we have to put \\ in front of it. 
+		return preg_replace('/\'/', '\\\'', preg_replace('/([\.!"#$%&\'\(\)*+,\/:;<=>?@\[\]\\\\^`{}|~])/', '\\\\\\\\$1', $selector));
 	}
 
 	/**

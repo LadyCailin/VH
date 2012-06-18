@@ -37,6 +37,7 @@ function setModelData($showEntities, $radioButton) {
 session_start();
 //First, create a new page manager.
 $manager = new HTMLPageManager();
+JS::$devMode = false;
 
 //A page consists of Views and Components. Views are entire pages, they know how to render
 //everything from the doctype to the </html> tag. In this example, we have 2 views, which
@@ -64,6 +65,23 @@ $manager->registerView("main", function($manager) {
     if(true){
         $img->setAltText("New alt text");
     }
+    
+    //We can also add javascript to individual elements, like so. This is now a clickable paragraph, that
+    //displays an alert box when we click it.
+    $clickableP = new HTMLP("Click me for an alert box");
+    $clickableP->onClick(JS::alert("You clicked me!"));
+    //We'll also demonstrate a few other DOM events. Note that this are light wrappers around javascript and
+    //jquery, but there is nothing stopping us from embedding pure javascript in these elements ourselves,
+    //or using the onEvent method to register completely custom events, or simply registering all the
+    //javascript ourselves elsewhere. This allows us to easily trace back to this code if traceback mode is on
+    //however, so it's encouraged to use this whenever possible. In addition, using the built in onEvent
+    //(or convenience wrappers) allows us to not have to worry about ID assignment, that happens for us in the event
+    //we just have a one off item that needs special javascript.
+    $underP = new HTMLP("");
+    $underP->setId("mousemoveElement");
+    $clickableP->onMouseOver(JS::setHTML("#mousemoveElement", "You are hovering over the above paragraph"));
+    $clickableP->onMouseOut(JS::setHTML("#mousemoveElement", ""));
+    
     $frame->appendContent($img)->     
             //Adds the table to the content area of the page. See below for the component named "table"
             appendContent($manager->getComponent("table"))-> 
@@ -75,7 +93,8 @@ $manager->registerView("main", function($manager) {
             appendContent(new HTMLDiv(new HTMLShowViewButton("view2", "Go to View 2, which demonstrates component reuse")))->
 	    //Here, we add a button that will take us to the accordion view
 	    appendContent(new HTMLDiv(new HTMLShowViewButton("accordion", "Go to the accordion demo")))->
-	    appendContent(new HTMLDiv(new HTMLShowViewButton("formatting", "Go to the formatting tag demo (things like <strong>, etc)")));
+	    appendContent(new HTMLDiv(new HTMLShowViewButton("formatting", "Go to the formatting tag demo (things like <strong>, etc)")))->
+	    appendContent($clickableP)->appendContent($underP);
     return $frame;
 });
 

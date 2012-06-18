@@ -184,6 +184,17 @@ abstract class HTMLView implements View {
         $this->addInlineScript($view->getInlineScripts());
         $this->setPageTitle($view->title);
         $this->customCSS .= ($this->customCSS != "" ? "\n" : "") . $view->customCSS;
+	$this->consolidate($view);
+    }
+    
+    /**
+     * If a view needs to do custom handling when the extract() function is called, it
+     * can override this method and do whatever it needs to. It is important to call
+     * parent::consolidate though, in the event a higher level class is doing something
+     * as well. 
+     */
+    protected function consolidate(HTMLView $subView){
+	    
     }
 
 }

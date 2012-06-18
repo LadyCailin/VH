@@ -123,6 +123,12 @@ class JS {
 		$selector = $selector->forceStringRender(self::$devMode);
 		return new MultiFunc("$(" . $selector . ").html();");
 	}
+	
+	public static function setHTML($selector, $html){
+		self::start($selector, $html);
+		$selector = $selector->forceStringRender(self::$devMode);
+		return new MultiFunc("$(" . $selector . ").html('" . preg_replace('/\'/', '\\\'', $html) . "');");
+	}
 
 	public static function concat($args) {
 		$args = func_get_args();
