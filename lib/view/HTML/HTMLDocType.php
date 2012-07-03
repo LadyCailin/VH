@@ -18,7 +18,7 @@ class HTMLDocType {
             $render .= " \"$uri\"";
         }
         $render .= ">";
-        return $render;
+        $this->render = $render;
     }
 
     public function render() {
